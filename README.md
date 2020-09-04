@@ -1,7 +1,7 @@
 sriov-prep
 =========
 
-Ansible role to configure SRIOV BIOS settings on Dell server
+Ansible plabook to configure SRIOV BIOS settings on Dell server
 
 
 Role Variables
@@ -28,3 +28,8 @@ Example Playbook
     - hosts: localhost
       roles:
          - { role: sriov-prep }
+
+Execution
+---------
+
+    ansible-playbook playbook.yml -e "cloud_name=cloud30 lab_name=scale"
