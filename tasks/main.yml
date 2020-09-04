@@ -1,0 +1,33 @@
+---
+- name: Download ocpinv.json
+  block:
+    - uri:
+        url: "{{ alias.lab_url }}/cloud/{{ cloud_name }}_ocpinventory.json"
+        return_content: yes
+      register: response
+    
+    - set_fact:
+        ocpinv: "{{ response.json }}"
+  when: lab_name == "alias"
+
+- name: Download ocpinv.json
+  block:
+    - uri:
+        url: "{{ scale.lab_url }}/cloud/{{ cloud_name }}_ocpinventory.json"
+        return_content: yes
+      register: response
+    
+    - set_fact:
+        ocpinv: "{{ response.json }}"
+  when: lab_name == "scale"
+
+- name: Set SriovGlobalEnable & VirtualizationMode then power cycle
+  include_tasks: 10_racadm_tasks.yml
+  with_items: "{{ ocpinv.nodes }}"
+  when: 
+    - '"fc640" in item.pm_addr'
+
+- name: wait for 420 seconds before checking for node
+  wait_for:
+    timeout: 420   
+

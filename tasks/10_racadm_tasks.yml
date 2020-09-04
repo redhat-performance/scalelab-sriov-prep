@@ -1,0 +1,38 @@
+- name: Check SriovGlobal Config
+  shell: |
+    sshpass -p "{{ item.pm_password }}" ssh -o StrictHostKeyChecking=no {{ item.pm_user }}@{{ item.pm_addr }} "racadm get BIOS.IntegratedDevices.SriovGlobalEnable" | grep SriovGlobalEnable | awk '{split($0,output,"="); print output[2]}'
+  register: sriovglobal
+
+- name: Configure BIOS for {{ pm_addr }}
+  block:
+    - name: Set SriovGlobal Config
+      shell: |
+        sshpass -p "{{ item.pm_password }}" ssh -o StrictHostKeyChecking=no {{ item.pm_user }}@{{ item.pm_addr }} "racadm set BIOS.IntegratedDevices.SriovGlobalEnable Enabled"  
+
+    - name: Create Jobqueue for SriovGlobal 
+      shell: |
+        sshpass -p "{{ item.pm_password }}" ssh -o StrictHostKeyChecking=no {{ item.pm_user }}@{{ item.pm_addr }} "racadm jobqueue create BIOS.Setup.1-1"
+
+    - name: Get Network Adapter XXV710 
+      shell: |
+        sshpass -p "{{ item.pm_password }}" ssh -o StrictHostKeyChecking=no {{ item.pm_user }}@{{ item.pm_addr }} "racadm hwinventory NIC" | grep "Network Adapter XXV710" | awk '{split($0,output,":"); print output[1]}'
+      register: networkadapter
+
+    - name: Get Device Config sequence ID 
+      shell: |
+        sshpass -p "{{ item.pm_password }}" ssh -o StrictHostKeyChecking=no {{ item.pm_user }}@{{ item.pm_addr }} "racadm get NIC.DeviceLevelConfig" | grep {{ networkadapter.stdout }} | awk '{split($0,output," "); print output[1]}'
+      register: deviceid
+
+    - name: set VirtualizationMode Config
+      shell: |
+        sshpass -p "{{ item.pm_password }}" ssh -o StrictHostKeyChecking=no {{ item.pm_user }}@{{ item.pm_addr }} "racadm set {{ deviceid.stdout }}.VirtualizationMode SRIOV"
+
+    - name: Create Jobqueue for VirtualizationMode 
+      shell: |
+        sshpass -p "{{ item.pm_password }}" ssh -o StrictHostKeyChecking=no {{ item.pm_user }}@{{ item.pm_addr }} "racadm jobqueue create {{ networkadapter.stdout }}"
+
+    - name: Power cycle
+      shell: |
+        sshpass -p "{{ item.pm_password }}" ssh -o StrictHostKeyChecking=no {{ item.pm_user }}@{{ item.pm_addr }} "racadm serveraction powercycle"
+  when:      
+    - sriovglobal.stdout == "Disabled" 
