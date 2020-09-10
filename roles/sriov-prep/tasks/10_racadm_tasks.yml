@@ -7,7 +7,7 @@
   block:
     - name: Set SriovGlobal Config
       shell: |
-        sshpass -p "{{ item.pm_password }}" ssh -o StrictHostKeyChecking=no {{ item.pm_user }}@{{ item.pm_addr }} "racadm set BIOS.IntegratedDevices.SriovGlobalEnable Enabled"  
+        sshpass -p "{{ item.pm_password }}" ssh -o StrictHostKeyChecking=no {{ item.pm_user }}@{{ item.pm_addr }} "racadm set BIOS.IntegratedDevices.SriovGlobalEnable {{ sriov_global_set }}"  
 
     - name: Create Jobqueue for SriovGlobal 
       shell: |
@@ -25,7 +25,7 @@
 
     - name: set VirtualizationMode Config
       shell: |
-        sshpass -p "{{ item.pm_password }}" ssh -o StrictHostKeyChecking=no {{ item.pm_user }}@{{ item.pm_addr }} "racadm set {{ deviceid.stdout }}.VirtualizationMode SRIOV"
+        sshpass -p "{{ item.pm_password }}" ssh -o StrictHostKeyChecking=no {{ item.pm_user }}@{{ item.pm_addr }} "racadm set {{ deviceid.stdout }}.VirtualizationMode {{ virt_mode }}"
 
     - name: Create Jobqueue for VirtualizationMode 
       shell: |
@@ -35,4 +35,4 @@
       shell: |
         sshpass -p "{{ item.pm_password }}" ssh -o StrictHostKeyChecking=no {{ item.pm_user }}@{{ item.pm_addr }} "racadm serveraction powercycle"
   when:      
-    - sriovglobal.stdout == "Disabled" 
+    - sriovglobal.stdout != sriov_global_set 

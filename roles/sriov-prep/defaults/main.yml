@@ -12,3 +12,9 @@ alias:
 scale:
 # lab specific vars, leave default
   lab_url: "http://quads.rdu2.scalelab.redhat.com"
+
+
+# BIOS vars
+sriov_global_set: "Enabled"
+
+virt_mode: "SRIOV"
