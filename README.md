@@ -33,3 +33,12 @@ Execution
 ---------
 
     ansible-playbook playbook.yml -e "cloud_name=cloud30 lab_name=scale"
+
+
+To only enable SR-IOV on selected nodes, provide the list of nodes mgmt address
+
+```yaml
+nodes_pm_addr: 
+- mgmt-e24-h03-000-r640.rdu2.scalelab.redhat.com
+- mgmt-e24-h05-000-r640.rdu2.scalelab.redhat.com
+```
