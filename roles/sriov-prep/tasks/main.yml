@@ -24,7 +24,7 @@
 - name: Set SriovGlobalEnable & VirtualizationMode then power cycle
   include_tasks: 10_racadm_tasks.yml
   with_items: "{{ ocpinv.nodes }}"
-  when:  '"fc640" in item.pm_addr or "r640" in item.pm_addr'
+  when:  (item.pm_addr in nodes_pm_addr) or (item.pm_addr == [] and "fc640" in item.pm_addr ) or (item.pm_addr == [] and "r640" in item.pm_addr)
 
 - name: wait for 420 seconds before checking for node
   wait_for:

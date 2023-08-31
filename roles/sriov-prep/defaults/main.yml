@@ -13,6 +13,12 @@ scale:
 # lab specific vars, leave default
   lab_url: "http://quads.rdu2.scalelab.redhat.com"
 
+# list of nodes to be selected, if empty it will enable SRIOV config on all servers in the given lab environment
+# nodes_pm_addr: 
+# - mgmt-e24-h03-000-r640.rdu2.scalelab.redhat.com
+# - mgmt-e24-h05-000-r640.rdu2.scalelab.redhat.com
+
+nodes_pm_addr: []
 
 # BIOS vars
 sriov_global_set: "Enabled"
