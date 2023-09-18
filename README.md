@@ -14,10 +14,10 @@ Role Variables
 
     alias:
     #lab specific vars, leave default
-      lab_url: "http://quads11.alias.bos.scalelab.redhat.com"
+      lab_url: "http://quads.example.com"
     scale:
     # lab specific vars, leave default
-      lab_url: "http://quads.rdu2.scalelab.redhat.com"
+      lab_url: "http://quads.example.com"
 
 
 
@@ -38,7 +38,7 @@ Execution
 To only enable SR-IOV on selected nodes, provide the list of nodes mgmt address
 
 ```yaml
-nodes_pm_addr: 
-- mgmt-e24-h03-000-r640.rdu2.scalelab.redhat.com
-- mgmt-e24-h05-000-r640.rdu2.scalelab.redhat.com
+nodes_pm_addr:
+- mgmt-e24-h03-000-r640.example.com
+- mgmt-e24-h05-000-r640.example.com
 ```
