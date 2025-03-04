@@ -2,13 +2,13 @@
 
 # Your allocation name/number in the shared labs
 cloud_name: cloud30
-# Lab name, typically can be alias or scale
+# Lab name, typically can be performance or scale
 lab_name: scale
 
 
-alias:
+performance:
 #lab specific vars, leave default
-  lab_url: "http://quads.alias.bos.scalelab.redhat.com/" 
+  lab_url: "http://quads2.rdu3.labs.perfscale.redhat.com" 
 scale:
 # lab specific vars, leave default
   lab_url: "http://quads.rdu2.scalelab.redhat.com"

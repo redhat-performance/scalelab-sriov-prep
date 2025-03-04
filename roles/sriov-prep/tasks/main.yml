@@ -2,18 +2,18 @@
 - name: Download ocpinv.json
   block:
     - uri:
-        url: "{{ alias.lab_url }}/cloud/{{ cloud_name }}_ocpinventory.json"
+        url: "{{ performance.lab_url }}/instack/{{ cloud_name }}_ocpinventory.json"
         return_content: yes
       register: response
     
     - set_fact:
         ocpinv: "{{ response.json }}"
-  when: lab_name == "alias"
+  when: lab_name == "performance"
 
 - name: Download ocpinv.json
   block:
     - uri:
-        url: "{{ scale.lab_url }}/cloud/{{ cloud_name }}_ocpinventory.json"
+        url: "{{ scale.lab_url }}/instack/{{ cloud_name }}_ocpinventory.json"
         return_content: yes
       register: response
     
@@ -28,5 +28,4 @@
 
 - name: wait for 420 seconds before checking for node
   wait_for:
-    timeout: 420   
-
+    timeout: 420
